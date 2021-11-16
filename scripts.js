@@ -38,11 +38,12 @@ app.ticker.add(() => {
         if(count > 0.15) turnOff = true;
     } else if(turnOff){
         count-=0.0004;
-        if(count <= 0) {count = 0; turnOff = false; radialBlur.angle=0}
+        if(count <= 0) { count = 0; turnOff = false; radialBlur.angle = 0 }
     }
     
     radialBlur.angle = CubicInOut(0,count*0.5,1,0.5) * 30;
     container.rotation += CubicInOut(0,count*0.5,1,0.5);
+
     
 });
 
