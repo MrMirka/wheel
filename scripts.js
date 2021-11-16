@@ -25,7 +25,7 @@ const radialBlur = new PIXI.filters.RadialBlurFilter();
 wheel.filters = [radialBlur];
 
 radialBlur.angle = 0;
-radialBlur.kernelSize = 32;
+radialBlur.kernelSize = 120;
 radialBlur.center = [370 , 370];
 radialBlur.radius = 370;
 
