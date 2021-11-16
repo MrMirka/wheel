@@ -9,8 +9,6 @@ let app = new PIXI.Application({
 document.body.appendChild(app.view);
 
 
-
-
 const container = new PIXI.Container();
 
 app.stage.addChild(container);
@@ -24,7 +22,7 @@ container.transform.position.set(370,370);
 
 //Radial blur
 const radialBlur = new PIXI.filters.RadialBlurFilter();
-container.filters = [radialBlur];
+wheel.filters = [radialBlur];
 
 radialBlur.angle = 0;
 radialBlur.kernelSize = 120;
