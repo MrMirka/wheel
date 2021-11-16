@@ -3,7 +3,6 @@ let turnOff = false;
 let app = new PIXI.Application({
     width: 740,
     height: 740,
-    //resolution: window.devicePixelRatio || 1,
     backgroundColor: 0xffffff,
     view: document.getElementById('c')
 });
@@ -35,11 +34,10 @@ radialBlur.kernelSize = 120;
 radialBlur.center = [370 , 370];
 radialBlur.radius = 370;
 
-//window.addEventListener('mousedown', () => {goBlur = true });
+//window.addEventListener('mousedown', () => {});
 
 
 app.ticker.add(() => {
-    ////radialBlur.angle = Math.abs(Math.cos(Date.now() *.001) * 9);   
     if(!turnOff) {
         count+=0.0004;
         if(count > 0.15) turnOff = true;
@@ -48,7 +46,7 @@ app.ticker.add(() => {
         if(count <= 0) {count = 0; turnOff = false; radialBlur.angle=0}
     }
     
-    radialBlur.angle = CubicInOut(0,count*0.5,1,0.5) * 50;
+    radialBlur.angle = CubicInOut(0,count*0.5,1,0.5) * 30;
     container.rotation += CubicInOut(0,count*0.5,1,0.5);
     console.log(radialBlur.angle);
     
