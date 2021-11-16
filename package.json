@@ -1,0 +1,19 @@
+{
+  "name": "wheelfortune",
+  "version": "1.0.0",
+  "description": "",
+  "main": "scripts.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@pixi/core": "^6.2.0",
+    "@pixi/filter-radial-blur": "^4.1.5",
+    "pixi-filters": "^4.1.5"
+  }
+}
