@@ -45,7 +45,6 @@ app.ticker.add(() => {
     
     radialBlur.angle = CubicInOut(0,count*0.5,1,0.5) * 30;
     container.rotation += CubicInOut(0,count*0.5,1,0.5);
-    console.log(radialBlur.angle);
     
 });
 
