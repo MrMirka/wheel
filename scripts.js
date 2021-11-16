@@ -25,7 +25,7 @@ const radialBlur = new PIXI.filters.RadialBlurFilter();
 wheel.filters = [radialBlur];
 
 radialBlur.angle = 0;
-radialBlur.kernelSize = 120;
+radialBlur.kernelSize = 32;
 radialBlur.center = [370 , 370];
 radialBlur.radius = 370;
 
@@ -42,7 +42,7 @@ app.ticker.add(() => {
     }
     
     radialBlur.angle = CubicInOut(0,count*0.5,1,0.5) * 30;
-    //container.rotation += CubicInOut(0,count*0.5,1,0.5);
+    container.rotation += CubicInOut(0,count*0.5,1,0.5);
     
 });
 
