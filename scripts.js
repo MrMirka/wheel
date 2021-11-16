@@ -16,16 +16,13 @@ const container = new PIXI.Container();
 app.stage.addChild(container);
 
 const texture =  PIXI.Texture.from('./img/wheel.png');
-
 const wheel = new PIXI.Sprite(texture);
 wheel.anchor.set(0.5);
-
 container.addChild(wheel);
 
-
-
 container.transform.position.set(370,370);
- 
+
+//Radial blur
 const radialBlur = new PIXI.filters.RadialBlurFilter();
 container.filters = [radialBlur];
 
@@ -36,7 +33,7 @@ radialBlur.radius = 370;
 
 //window.addEventListener('mousedown', () => {});
 
-
+//Loop
 app.ticker.add(() => {
     if(!turnOff) {
         count+=0.0004;
@@ -52,7 +49,7 @@ app.ticker.add(() => {
     
 });
 
-
+//Easing
 function CubicInOut(t, b, c, d){
 	if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
 	return c / 2 * ((t -= 2) * t * t + 2) + b;
