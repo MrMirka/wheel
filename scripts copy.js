@@ -1,6 +1,5 @@
 let count = 0;
-let toRun = false;
-let index = 2;
+let turnOff = false;
 
 //Position data
 
@@ -9,11 +8,11 @@ const position = [
    3.14, 3.454, 3.768, 4.082, 4.396, 4.71, 5.024, 5.338, 5.652, 5.966
 ];
 
-let startPosition = position[0];
-let toPosition = position[19];
-let rotationAngle = getRotationAngle();
 
-//Create scene
+const selectPosition = position[19];
+
+console.log(getRotationAngle());
+
 let app = new PIXI.Application({
     width: 740,
     height: 740,
@@ -43,28 +42,33 @@ radialBlur.kernelSize = 120;
 radialBlur.center = [370 , 370];
 radialBlur.radius = 370;
 
-window.addEventListener('mousedown', () => { toRun = true; });
+//window.addEventListener('mousedown', () => {});
 
+/*
+let n = 0;
+let angle = 0;
+while ( n < 20) {
+    console.log(angle);
+    n++;
+    angle +=0.314;
+    
+}
+*/
 
 
 //Loop
 app.ticker.add(() => {
-    if(toRun){
-     console.log(rotationAngle);   
-     container.rotation += 0.01;
-     if (container.rotation >= toPosition + Math.PI * index) {
-             container.rotation = toPosition; 
-             startPosition = toPosition; 
-             toPosition = position [Math.floor(Math.random() * 20)];
-             if(toPosition < startPosition) {
-                 index = 4;
-             } else {
-                index = 2;
-             }
-             rotationAngle = getRotationAngle();
-             toRun = false;
-        }
+    if(!turnOff) {
+        count+=0.0004;
+        if(count > 0.15) turnOff = true;
+    } else if(turnOff){
+        count-=0.0004;
+        if(count <= 0) { count = 0; turnOff = false; radialBlur.angle = 0 }
     }
+    
+    radialBlur.angle = CubicInOut(0,count*0.5,1,0.5) * 30;
+    container.rotation += CubicInOut(0,count*0.5,1,0.5);
+    
 });
 
 //Easing
@@ -80,6 +84,5 @@ function getDelta(n) {
 }
 
 function getRotationAngle(){
-    
-    return getDelta(startPosition) + Math.PI * 2 +  toPosition;
+    return getDelta(selectPosition) + Math.PI * 6 + selectPosition;
 }
