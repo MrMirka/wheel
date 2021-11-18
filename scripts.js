@@ -60,7 +60,7 @@ app.ticker.add(() => {
         container.rotation = CubicInOut(n, param.startPosition, param.targetPosition - param.startPosition + (Math.PI * 4), param.duration);
         n += 1;
         count += 0.009;
-        if(n === 350) {
+        if(n === param.duration) {
             count = 0;
             toRun = false;
             n = 1;
