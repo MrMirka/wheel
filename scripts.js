@@ -1,6 +1,8 @@
-let count = 0;
+let n = 1;
 let toRun = false;
-let index = 2;
+let count = 0;
+
+let caption = document.getElementById("caption");
 
 //Position data
 
@@ -9,9 +11,14 @@ const position = [
    3.14, 3.454, 3.768, 4.082, 4.396, 4.71, 5.024, 5.338, 5.652, 5.966
 ];
 
-let startPosition = position[0];
-let toPosition = position[19];
-let rotationAngle = getRotationAngle();
+let param = {
+    lastPosition: 0,
+    startPosition: 0,
+    targetPosition: position[19],
+    duration: 350
+};
+setTarget();
+
 
 //Create scene
 let app = new PIXI.Application({
@@ -27,7 +34,7 @@ const container = new PIXI.Container();
 
 app.stage.addChild(container);
 
-const texture =  PIXI.Texture.from('./img/wheel.png');
+const texture =  PIXI.Texture.from('./img/wheel2.png');
 const wheel = new PIXI.Sprite(texture);
 wheel.anchor.set(0.5);
 container.addChild(wheel);
@@ -45,24 +52,21 @@ radialBlur.radius = 370;
 
 window.addEventListener('mousedown', () => { toRun = true; });
 
-
-
 //Loop
 app.ticker.add(() => {
     if(toRun){
-     console.log(rotationAngle);   
-     container.rotation += 0.01;
-     if (container.rotation >= toPosition + Math.PI * index) {
-             container.rotation = toPosition; 
-             startPosition = toPosition; 
-             toPosition = position [Math.floor(Math.random() * 20)];
-             if(toPosition < startPosition) {
-                 index = 4;
-             } else {
-                index = 2;
-             }
-             rotationAngle = getRotationAngle();
-             toRun = false;
+        //radialBlur.angle = Math.abs(Math.sin(count));
+        radialBlur.angle = CubicInOut(Math.abs(Math.sin(count)) * param.duration, 0, 2.3, param.duration);
+        container.rotation = CubicInOut(n, param.startPosition, param.targetPosition - param.startPosition + (Math.PI * 4), param.duration);
+        n += 1;
+        count += 0.009;
+        if(n === 350) {
+            count = 0;
+            toRun = false;
+            n = 1;
+            container.rotation = param.targetPosition;
+            param.startPosition = param.targetPosition;
+            setTarget();
         }
     }
 });
@@ -72,14 +76,10 @@ function CubicInOut(t, b, c, d){
 	if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
 	return c / 2 * ((t -= 2) * t * t + 2) + b;
 }
-
-//n - current engle
-function getDelta(n) {
-    if (n === 0) return 0;
-    return 2 * Math.PI - n;
-}
-
-function getRotationAngle(){
-    
-    return getDelta(startPosition) + Math.PI * 2 +  toPosition;
+function setTarget(){
+    let pos = Math.floor(Math.random() * 20);
+    param.targetPosition = position[pos];
+    let str = 'Кручу на ' + pos;
+    console.log(str);
+    caption.innerHTML = str;
 }

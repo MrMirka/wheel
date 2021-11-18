@@ -10,5 +10,11 @@ body {
     height: 740px;
     top: 100px;
     left:100px;
+}
 
+#caption {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    font-size: 25px;
 }
