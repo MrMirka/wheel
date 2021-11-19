@@ -93,7 +93,6 @@ app.ticker.add(() => {
         wheel.rotation = CubicInOut(n, param.startPosition, param.targetPosition - param.startPosition + (Math.PI * 4), param.duration);
         n++;
         count += countShift;
-        console.log(radialBlur.angle);
         if(n === param.duration) {
             count = 0;
             toRun = false;
