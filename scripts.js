@@ -82,6 +82,7 @@ radialBlur.radius = param.width / 2;
 
 //Mouse listener
 window.addEventListener('mousedown', () => { toRun = true; });
+window.addEventListener("touchstart", () => { toRun = true; });
 
 //Loop
 app.ticker.add(() => {
