@@ -80,6 +80,7 @@ radialBlur.kernelSize = 120;
 radialBlur.center = [param.width / 2,param.height / 2];
 radialBlur.radius = param.width / 2;
 
+
 //Mouse listener
 window.addEventListener('mousedown', () => { toRun = true; });
 window.addEventListener("touchstart", () => { toRun = true; });
@@ -87,6 +88,7 @@ window.addEventListener("touchstart", () => { toRun = true; });
 //Loop
 app.ticker.add(() => {
     if(toRun){
+        if(!isMobileDevice())
         radialBlur.angle = CubicInOut(Math.abs(Math.sin(count)) * param.duration, 0, 2.3, param.duration);
         wheel.rotation = CubicInOut(n, param.startPosition, param.targetPosition - param.startPosition + (Math.PI * 4), param.duration);
         n++;
@@ -118,4 +120,13 @@ function setTarget(){
 function updateParam(target){
     wheel.rotation = target;
     param.startPosition = target;
+}
+
+function isMobileDevice(){
+
+	if( /Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+		return true;
+	}else{
+		return false;
+	}
 }
