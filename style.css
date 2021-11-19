@@ -6,8 +6,8 @@ body {
 
 #c {
     position: absolute;
-    width: 740px;
-    height: 740px;
+    width: 700px;
+    height: 700px;
     top: 100px;
     left:100px;
 }
@@ -18,3 +18,4 @@ body {
     left: 40px;
     font-size: 25px;
 }
+

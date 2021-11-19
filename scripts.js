@@ -2,7 +2,7 @@ let n = 1;
 let toRun = false;
 let count = 0;
 
-let caption = document.getElementById("caption");
+//let caption = document.getElementById("caption");
 
 //Position data
 
@@ -11,19 +11,23 @@ const position = [
    3.14, 3.454, 3.768, 4.082, 4.396, 4.71, 5.024, 5.338, 5.652, 5.966
 ];
 
+
 let param = {
     lastPosition: 0,
     startPosition: 0,
     targetPosition: position[19],
-    duration: 350
+    duration: 350,
+    img: './img/baraban.png',
+    width: document.getElementById('c').offsetWidth,
+    height: document.getElementById('c').offsetHeight
 };
 setTarget();
 
 
 //Create scene
 let app = new PIXI.Application({
-    width: 740,
-    height: 740,
+    width: param.width,
+    height: param.height,
     backgroundColor: 0xffffff,
     view: document.getElementById('c')
 });
@@ -31,41 +35,66 @@ document.body.appendChild(app.view);
 
 
 const container = new PIXI.Container();
-
 app.stage.addChild(container);
 
-const texture =  PIXI.Texture.from('./img/wheel2.png');
+//Add Back
+const textureBack =  PIXI.Texture.from('./img/baraban_back.png');
+const wheelBack = new PIXI.Sprite(textureBack);
+wheelBack.anchor.set(0.5);
+wheelBack.width = param.width;
+wheelBack.height = param.height;
+container.addChild(wheelBack);
+
+//Add Disk 
+const texture =  PIXI.Texture.from(param.img);
 const wheel = new PIXI.Sprite(texture);
+wheel.width = param.width-50;
+wheel.height = param.height-50;
 wheel.anchor.set(0.5);
 container.addChild(wheel);
+container.transform.position.set(param.width / 2,param.height / 2);
 
-container.transform.position.set(370,370);
+//Add Logo
+const textureLogo =  PIXI.Texture.from('./img/logo.png');
+const wheelLogo = new PIXI.Sprite(textureLogo);
+wheelLogo.anchor.set(0.5);
+wheelLogo.width = 130;
+wheelLogo.height = 130;
+container.addChild(wheelLogo);
+
+//Add Arrow
+const textureArrow =  PIXI.Texture.from('./img/arrow.png');
+const wheelArrow = new PIXI.Sprite(textureArrow);
+wheelArrow.anchor.set(0.5,4);
+wheelArrow.scale.set(0.5);
+container.addChild(wheelArrow);
+
+
+
 
 //Radial blur
 const radialBlur = new PIXI.filters.RadialBlurFilter();
 wheel.filters = [radialBlur];
-
 radialBlur.angle = 0;
 radialBlur.kernelSize = 120;
-radialBlur.center = [370 , 370];
-radialBlur.radius = 370;
+radialBlur.center = [param.width / 2,param.height / 2];
+radialBlur.radius = param.width / 2;
 
+//Mouse listener
 window.addEventListener('mousedown', () => { toRun = true; });
 
 //Loop
 app.ticker.add(() => {
     if(toRun){
-        //radialBlur.angle = Math.abs(Math.sin(count));
         radialBlur.angle = CubicInOut(Math.abs(Math.sin(count)) * param.duration, 0, 2.3, param.duration);
-        container.rotation = CubicInOut(n, param.startPosition, param.targetPosition - param.startPosition + (Math.PI * 4), param.duration);
-        n += 1;
+        wheel.rotation = CubicInOut(n, param.startPosition, param.targetPosition - param.startPosition + (Math.PI * 4), param.duration);
+        n++;
         count += 0.009;
         if(n === param.duration) {
             count = 0;
             toRun = false;
             n = 1;
-            container.rotation = param.targetPosition;
-            param.startPosition = param.targetPosition;
+            updateParam(param.targetPosition);
             setTarget();
         }
     }
@@ -76,10 +105,16 @@ function CubicInOut(t, b, c, d){
 	if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
 	return c / 2 * ((t -= 2) * t * t + 2) + b;
 }
+
 function setTarget(){
     let pos = Math.floor(Math.random() * 20);
     param.targetPosition = position[pos];
-    let str = 'Кручу на ' + pos;
-    console.log(str);
-    caption.innerHTML = str;
+    //let str = 'Кручу на ' + pos;
+    //console.log(str);
+    //caption.innerHTML = str;
+}
+
+function updateParam(target){
+    wheel.rotation = target;
+    param.startPosition = target;
 }
