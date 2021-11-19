@@ -5,7 +5,6 @@ let count = 0;
 //let caption = document.getElementById("caption");
 
 //Position data
-
 const position = [
    0, 0.314, 0.628, 0.942, 1.256, 1.57, 1.884, 2.198, 2.512, 2.826,
    3.14, 3.454, 3.768, 4.082, 4.396, 4.71, 5.024, 5.338, 5.652, 5.966
@@ -13,11 +12,14 @@ const position = [
 
 
 let param = {
-    lastPosition: 0,
     startPosition: 0,
     targetPosition: position[19],
     duration: 350,
-    img: './img/baraban.png',
+    blurAngle: 2.3,
+    imgBaraban: './img/baraban.png',
+    imgBack: './img/baraban_back.png',
+    imgLogo: './img/logo.png',
+    imgArrow: './img/arrow.png',
     width: document.getElementById('c').offsetWidth,
     height: document.getElementById('c').offsetHeight
 };
@@ -38,7 +40,7 @@ const container = new PIXI.Container();
 app.stage.addChild(container);
 
 //Add Back
-const textureBack =  PIXI.Texture.from('./img/baraban_back.png');
+const textureBack =  PIXI.Texture.from(param.imgBack);
 const wheelBack = new PIXI.Sprite(textureBack);
 wheelBack.anchor.set(0.5);
 wheelBack.width = param.width;
@@ -46,7 +48,7 @@ wheelBack.height = param.height;
 container.addChild(wheelBack);
 
 //Add Disk 
-const texture =  PIXI.Texture.from(param.img);
+const texture =  PIXI.Texture.from(param.imgBaraban);
 const wheel = new PIXI.Sprite(texture);
 wheel.width = param.width-50;
 wheel.height = param.height-50;
@@ -55,7 +57,7 @@ container.addChild(wheel);
 container.transform.position.set(param.width / 2,param.height / 2);
 
 //Add Logo
-const textureLogo =  PIXI.Texture.from('./img/logo.png');
+const textureLogo =  PIXI.Texture.from(param.imgLogo);
 const wheelLogo = new PIXI.Sprite(textureLogo);
 wheelLogo.anchor.set(0.5);
 wheelLogo.width = 130;
@@ -63,13 +65,11 @@ wheelLogo.height = 130;
 container.addChild(wheelLogo);
 
 //Add Arrow
-const textureArrow =  PIXI.Texture.from('./img/arrow.png');
+const textureArrow =  PIXI.Texture.from(param.imgArrow);
 const wheelArrow = new PIXI.Sprite(textureArrow);
 wheelArrow.anchor.set(0.5,4);
 wheelArrow.scale.set(0.5);
 container.addChild(wheelArrow);
-
-
 
 
 //Radial blur
@@ -80,19 +80,20 @@ radialBlur.kernelSize = 120;
 radialBlur.center = [param.width / 2,param.height / 2];
 radialBlur.radius = param.width / 2;
 
-
 //Mouse listener
 window.addEventListener('mousedown', () => { toRun = true; });
 window.addEventListener("touchstart", () => { toRun = true; });
 
 //Loop
+let countShift = (1 + param.blurAngle) / param.duration;
 app.ticker.add(() => {
     if(toRun){
         if(!isMobileDevice())
-        radialBlur.angle = CubicInOut(Math.abs(Math.sin(count)) * param.duration, 0, 2.3, param.duration);
+        radialBlur.angle = CubicInOut(Math.abs(Math.sin(count)) * param.duration, 0, param.blurAngle, param.duration);
         wheel.rotation = CubicInOut(n, param.startPosition, param.targetPosition - param.startPosition + (Math.PI * 4), param.duration);
         n++;
-        count += 0.009;
+        count += countShift;
+        console.log(radialBlur.angle);
         if(n === param.duration) {
             count = 0;
             toRun = false;
@@ -109,6 +110,7 @@ function CubicInOut(t, b, c, d){
 	return c / 2 * ((t -= 2) * t * t + 2) + b;
 }
 
+//PopUP 
 function setTarget(){
     let pos = Math.floor(Math.random() * 20);
     param.targetPosition = position[pos];
