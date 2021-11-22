@@ -1,28 +1,48 @@
-let n = 1;
+let n = 1; //Счетчик кадров 
 let toRun = false;
-let count = 0;
+let count = 0; //Счетчик блур (нужен для рассчета размития)
+let radialBlur;
 
-//let caption = document.getElementById("caption");
+const sprites = {}; //Хранилище текстур
 
-//Position data
+//Угол поворота в радианах
 const position = [
-   0, 0.314, 0.628, 0.942, 1.256, 1.57, 1.884, 2.198, 2.512, 2.826,
-   3.14, 3.454, 3.768, 4.082, 4.396, 4.71, 5.024, 5.338, 5.652, 5.966
+   {name: 'Купон на BMW_1',position: 0},
+   {name: '50F_1', position: 0.314},
+   {name: '2000F_1', position: 0.628},
+   {name: '200F_1', position: 0.942,},
+   {name: '50F_2', position: 1.256},
+   {name: 'Гаджет', position: 1.57},
+   {name: '100F_1', position: 1.884},
+   {name: '200F_2', position: 2.198},
+   {name: '500F_1', position: 2.512},
+   {name: '50F_3', position: 2.826},
+   {name: 'Купон на BMW_2', position: 3.14},
+   {name: '200F_3', position: 3.454},
+   {name: '2000F_2', position: 3.768},
+   {name: '500F_2', position: 4.082},
+   {name: '50F_4', position: 4.396},
+   {name: 'Купон на BMW_3', position: 4.71},
+   {name: '200F_4', position: 5.024},
+   {name: '500F_3', position:5.338},
+   {name: '100F_2', position: 5.652},
+   {name: '5000F', position: 5.966}
 ];
 
-
+//Базовые параметры скрипта
 let param = {
-    startPosition: 0,
-    targetPosition: position[19],
+    startPosition: 0, //From
+    targetPosition: position[19].position, //To
     duration: 350,
     blurAngle: 2.3,
     imgBaraban: './img/baraban.png',
-    imgBack: './img/baraban_back.png',
+    imgBack: './img/barabanback.png',
     imgLogo: './img/logo.png',
     imgArrow: './img/arrow.png',
     width: document.getElementById('c').offsetWidth,
     height: document.getElementById('c').offsetHeight
 };
+//Установливает рандомную цель (тестовая)
 setTarget();
 
 
@@ -39,90 +59,105 @@ document.body.appendChild(app.view);
 const container = new PIXI.Container();
 app.stage.addChild(container);
 
-//Add Back
-const textureBack =  PIXI.Texture.from(param.imgBack);
-const wheelBack = new PIXI.Sprite(textureBack);
-wheelBack.anchor.set(0.5);
-wheelBack.width = param.width;
-wheelBack.height = param.height;
-container.addChild(wheelBack);
+//Loaders
+const loader = new PIXI.Loader();
+loader.add('wheelBack', param.imgBack)
+      .add('wheel', param.imgBaraban)
+      .add('wheelLogo', param.imgLogo)
+      .add('wheelArrow', param.imgArrow);
 
-//Add Disk 
-const texture =  PIXI.Texture.from(param.imgBaraban);
-const wheel = new PIXI.Sprite(texture);
-wheel.width = param.width-50;
-wheel.height = param.height-50;
-wheel.anchor.set(0.5);
-container.addChild(wheel);
-container.transform.position.set(param.width / 2,param.height / 2);
+loader.load((loader, resources) => {
+    //Код выполняется после загрузки изображений
+    sprites.wheel = new PIXI.Sprite(resources.wheel.texture);
+    sprites.wheelLogo = new PIXI.Sprite(resources.wheelLogo.texture);
+    sprites.wheelArrow = new PIXI.Sprite(resources.wheelArrow.texture);
+    sprites.wheelBack = new PIXI.Sprite(resources.wheelBack.texture);
 
-//Add Logo
-const textureLogo =  PIXI.Texture.from(param.imgLogo);
-const wheelLogo = new PIXI.Sprite(textureLogo);
-wheelLogo.anchor.set(0.5);
-wheelLogo.width = 130;
-wheelLogo.height = 130;
-container.addChild(wheelLogo);
+    //Задний фон
+    sprites.wheelBack.anchor.set(0.5);
+    sprites.wheelBack.width = param.width;
+    sprites.wheelBack.height = param.height;
+    container.addChild(sprites.wheelBack);
 
-//Add Arrow
-const textureArrow =  PIXI.Texture.from(param.imgArrow);
-const wheelArrow = new PIXI.Sprite(textureArrow);
-wheelArrow.anchor.set(0.5,4);
-wheelArrow.scale.set(0.5);
-container.addChild(wheelArrow);
+    //Барабан
+    sprites.wheel.width = param.width * 0.94;
+    sprites.wheel.height = param.height * 0.94;
+    sprites.wheel.anchor.set(0.5);
+    container.addChild(sprites.wheel);
 
+    //Логотип
+    sprites.wheelLogo.anchor.set(0.5);
+    sprites.wheelLogo.width = param.width * 0.22;
+    sprites.wheelLogo.height = param.height * 0.22;
+    container.addChild(sprites.wheelLogo);
 
-//Radial blur
-const radialBlur = new PIXI.filters.RadialBlurFilter();
-wheel.filters = [radialBlur];
-radialBlur.angle = 0;
-radialBlur.kernelSize = 120;
-radialBlur.center = [param.width / 2,param.height / 2];
-radialBlur.radius = param.width / 2;
+    //Стрелка
+    sprites.wheelArrow.anchor.set(0.5);
+    sprites.wheelArrow.width = param.width;
+    sprites.wheelArrow.height = param.height;
+    container.addChild(sprites.wheelArrow);
+
+    //Радиальный блур
+    radialBlur = new PIXI.filters.RadialBlurFilter();
+    sprites.wheel.filters = [radialBlur];
+    radialBlur.angle = 0;
+    radialBlur.kernelSize = 120;
+    radialBlur.center = [param.width / 2,param.height / 2];
+    radialBlur.radius = param.width / 2;
+    container.transform.position.set(param.width / 2,param.height / 2);
+
+    //Запуск лупа
+    initLoop();
+});      
+
 
 //Mouse listener
 window.addEventListener('mousedown', () => { toRun = true; });
 window.addEventListener("touchstart", () => { toRun = true; });
 
-//Loop
-let countShift = (1 + param.blurAngle) / param.duration;
-app.ticker.add(() => {
-    if(toRun){
-        if(!isMobileDevice())
-        radialBlur.angle = CubicInOut(Math.abs(Math.sin(count)) * param.duration, 0, param.blurAngle, param.duration);
-        wheel.rotation = CubicInOut(n, param.startPosition, param.targetPosition - param.startPosition + (Math.PI * 4), param.duration);
-        n++;
-        count += countShift;
-        if(n === param.duration) {
-            count = 0;
-            toRun = false;
-            n = 1;
-            updateParam(param.targetPosition);
-            setTarget();
+//Инициализируем анимацию, движение колеса когда toRun = true
+function initLoop() {
+    let countShift = (1 + param.blurAngle) / param.duration;
+    app.ticker.add(() => {
+        if(toRun){
+            if(!isMobileDevice())
+            radialBlur.angle = CubicInOut(Math.abs(Math.sin(count)) * param.duration, 0, param.blurAngle, param.duration);
+            sprites.wheel.rotation = CubicInOut(n, param.startPosition, param.targetPosition - param.startPosition + (Math.PI * 4), param.duration);
+            n++;
+            count += countShift;
+            if(n === param.duration) {
+                count = 0;
+                toRun = false;
+                n = 1;
+                updateParam(param.targetPosition);
+                setTarget();
+            }
         }
-    }
-});
+    });
+}
 
-//Easing
+//Изинг
 function CubicInOut(t, b, c, d){
 	if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
 	return c / 2 * ((t -= 2) * t * t + 2) + b;
 }
 
-//PopUP 
+//Тестовая функция для рандомного положения барабана (заменить на нужное поведение) 
 function setTarget(){
     let pos = Math.floor(Math.random() * 20);
-    param.targetPosition = position[pos];
-    //let str = 'Кручу на ' + pos;
-    //console.log(str);
-    //caption.innerHTML = str;
+    param.targetPosition = position[pos].position;
+
+    let str = 'Кручу на ' + position[pos].name;
+    console.log(str);
 }
 
 function updateParam(target){
-    wheel.rotation = target;
-    param.startPosition = target;
+    sprites.wheel.rotation = target; //Обнуляем количесво оборотов колеса (чтобы счисление было в пределах 0 - 2PI)
+    param.startPosition = target; //Устанавливаем текущее положение в стартовое
 }
 
+//Проверка на мобильные устройства
+//Блур включаем только на десктопах и айфонах
 function isMobileDevice(){
 
 	if( /Android|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
