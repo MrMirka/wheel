@@ -50,7 +50,9 @@ setTarget();
 let app = new PIXI.Application({
     width: param.width,
     height: param.height,
-    backgroundColor: 0xffffff,
+    //backgroundColor: 0xffffff,
+    backgroundAlpha: 0,
+    antialias: true,
     view: document.getElementById('c')
 });
 document.body.appendChild(app.view);
