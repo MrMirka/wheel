@@ -186,7 +186,7 @@ function isMobileDevice(){
 }
 
 
-
+//Квадратный лоадер
 function initLoader(){
     loaderBlock = new PIXI.Container();
     loaderBlock.position.x = param.width / 2;
@@ -210,6 +210,8 @@ function initLoader(){
     loaderBlock.addChild(loaderS);
 }
 
+
+//Круглый лоадер
 function initLoaderCircle(){
     loaderBlock = new PIXI.Container();
     loaderBlock.position.x = param.width / 2;
@@ -228,6 +230,7 @@ function initLoaderCircle(){
 }
 
 
+//Удаляем лоадер
 function removeLoader(){
     app.stage.removeChild(loaderBlock);
 }
