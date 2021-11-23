@@ -136,7 +136,7 @@ function initLoop() {
         if(loaderBlock != undefined){
             loaderBlock.rotation += 0.15;
          }
-         
+
         if(toRun){
             if(!isMobileDevice())
             radialBlur.angle = CubicInOut(Math.abs(Math.sin(count)) * param.duration, 0, param.blurAngle, param.duration);
@@ -213,7 +213,7 @@ function initLoader(){
 function initLoaderCircle(){
     loaderBlock = new PIXI.Container();
     loaderBlock.position.x = param.width / 2;
-    loaderBlock.position.y = param.height / 2;
+    loaderBlock.position.y = (param.height / 2) * 0.97;
     loaderBlock.pivot.x = loaderBlock.width / 2;
     loaderBlock.pivot.y = loaderBlock.height / 2;
     app.stage.addChild(loaderBlock);
