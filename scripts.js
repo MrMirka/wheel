@@ -133,7 +133,7 @@ function initLoop() {
     app.ticker.add(() => {
            //Loader
         if(loaderBlock != undefined){
-            loaderBlock.rotation += 0.25;
+            loaderBlock.rotation += 0.15;
          }
         if(toRun){
             if(!isMobileDevice())
