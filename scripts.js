@@ -39,8 +39,8 @@ let param = {
     imgBack: './img/barabanback.png',
     imgLogo: './img/logo.png',
     imgArrow: './img/arrow.png',
-    width: document.getElementById('c').offsetWidth,
-    height: document.getElementById('c').offsetHeight
+    width: document.getElementById('c').offsetWidth *  window.devicePixelRatio,
+    height: document.getElementById('c').offsetHeight *  window.devicePixelRatio
 };
 //Установливает рандомную цель (тестовая)
 setTarget();
@@ -56,7 +56,6 @@ let app = new PIXI.Application({
     view: document.getElementById('c')
 });
 document.body.appendChild(app.view);
-
 
 const container = new PIXI.Container();
 app.stage.addChild(container);
