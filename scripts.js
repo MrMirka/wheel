@@ -2,7 +2,7 @@ let n = 1; //Счетчик кадров
 let toRun = false;
 let count = 0; //Счетчик блур (нужен для рассчета размития)
 let radialBlur;
-let loaderS;
+let loaderBlock;
 
 const sprites = {}; //Хранилище текстур
 
@@ -59,16 +59,16 @@ let app = new PIXI.Application({
 document.body.appendChild(app.view);
 
 const container = new PIXI.Container();
-const loaderBlock = new PIXI.Container();
-loaderBlock.position.x = param.width / 2;
-loaderBlock.position.y = param.height / 2;
-loaderBlock.pivot.x = loaderBlock.width / 2;
-loaderBlock.pivot.y = loaderBlock.height / 2;
-app.stage.addChild(container, loaderBlock);
+app.stage.addChild(container);
+
+
+//Запускаем графический лоадер
+initLoader();
+
 
 //Запуск лупа
 initLoop();
-initLoader();
+
 
 //Loaders
 const loader = new PIXI.Loader();
@@ -117,6 +117,7 @@ loader.load((loader, resources) => {
     radialBlur.radius = param.width / 2;
     container.transform.position.set(param.width / 2,param.height / 2);
 
+    //Скрываем графический лоадер 
     removeLoader();
 
     //Mouse listener
@@ -131,7 +132,7 @@ loader.load((loader, resources) => {
 function initLoop() {
     let countShift = (1 + param.blurAngle) / param.duration;
     app.ticker.add(() => {
-           //Loader
+        //Loader
         if(loaderBlock != undefined){
             loaderBlock.rotation += 0.15;
          }
@@ -186,8 +187,15 @@ function isMobileDevice(){
 
 
 function initLoader(){
+    loaderBlock = new PIXI.Container();
+    loaderBlock.position.x = param.width / 2;
+    loaderBlock.position.y = param.height / 2;
+    loaderBlock.pivot.x = loaderBlock.width / 2;
+    loaderBlock.pivot.y = loaderBlock.height / 2;
+    app.stage.addChild(loaderBlock);
+
     let size = param.width * 0.06;
-    loaderS = new PIXI.Graphics();
+    let loaderS = new PIXI.Graphics();
     loaderS.beginFill(0xFF0025);
     loaderS.drawRect(0, 0, size, size);
     loaderS.beginFill(0xF7E800);
