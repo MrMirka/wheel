@@ -63,7 +63,7 @@ app.stage.addChild(container);
 
 
 //Запускаем графический лоадер
-initLoader();
+initLoaderCircle();
 
 
 //Запуск лупа
@@ -208,6 +208,26 @@ function initLoader(){
     loaderS.pivot.y = loaderS.height / 2;
     loaderBlock.addChild(loaderS);
 }
+
+function initLoaderCircle(){
+    loaderBlock = new PIXI.Container();
+    loaderBlock.position.x = param.width / 2;
+    loaderBlock.position.y = param.height / 2;
+    loaderBlock.pivot.x = loaderBlock.width / 2;
+    loaderBlock.pivot.y = loaderBlock.height / 2;
+    app.stage.addChild(loaderBlock);
+
+    let size = param.width * 0.08;
+    let loaderS = new PIXI.Graphics();
+    loaderS.lineStyle(size * 0.2, 0xFF0025);
+    loaderS.arc(0, 0, size, 0, Math.PI*2);
+    loaderS.lineStyle(size * 0.2, 0xF7E800);
+    loaderS.arc(0, 0, size, 0, Math.PI * 0.2);
+    //loaderS.pivot.x = loaderS.width / 2;
+    //loaderS.pivot.y = loaderS.height / 2;
+    loaderBlock.addChild(loaderS);
+}
+
 
 function removeLoader(){
     app.stage.removeChild(loaderBlock);
