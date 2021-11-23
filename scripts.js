@@ -2,7 +2,7 @@ let n = 1; //Счетчик кадров
 let toRun = false;
 let count = 0; //Счетчик блур (нужен для рассчета размития)
 let radialBlur;
-let loaderBlock;
+let loaderBlock; //Графический лоадер
 
 const sprites = {}; //Хранилище текстур
 
@@ -136,6 +136,7 @@ function initLoop() {
         if(loaderBlock != undefined){
             loaderBlock.rotation += 0.15;
          }
+         
         if(toRun){
             if(!isMobileDevice())
             radialBlur.angle = CubicInOut(Math.abs(Math.sin(count)) * param.duration, 0, param.blurAngle, param.duration);
