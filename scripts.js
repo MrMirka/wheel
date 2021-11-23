@@ -222,9 +222,7 @@ function initLoaderCircle(){
     loaderS.lineStyle(size * 0.2, 0xFF0025);
     loaderS.arc(0, 0, size, 0, Math.PI*2);
     loaderS.lineStyle(size * 0.2, 0xF7E800);
-    loaderS.arc(0, 0, size, 0, Math.PI * 0.2);
-    //loaderS.pivot.x = loaderS.width / 2;
-    //loaderS.pivot.y = loaderS.height / 2;
+    loaderS.arc(0, 0, size, 0, Math.PI * 0.4);
     loaderBlock.addChild(loaderS);
 }
 
