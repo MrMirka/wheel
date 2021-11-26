@@ -170,7 +170,6 @@ function setTarget(){
         shift = -0.12;
     }
     param.targetPosition = position[pos].position + shift;
-    //param.targetPosition = position[pos].position + 0.12;
 
     let str = 'Кручу на  ' + position[pos].name;
     console.log(str);
