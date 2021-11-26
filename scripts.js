@@ -163,10 +163,18 @@ function CubicInOut(t, b, c, d){
 //Тестовая функция для рандомного положения барабана (заменить на нужное поведение) 
 function setTarget(){
     let pos = Math.floor(Math.random() * 20);
-    param.targetPosition = position[pos].position;
+    let shift = (Math.random() - 0.5) * 0.17;
+    if(shift > 0.12) {
+        shift = 0.12;
+    }else if(shift < -0.12){
+        shift = -0.12;
+    }
+    param.targetPosition = position[pos].position + shift;
+    //param.targetPosition = position[pos].position + 0.12;
 
     let str = 'Кручу на ' + position[pos].name;
     console.log(str);
+    
 }
 
 function updateParam(target){
